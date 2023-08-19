@@ -7,6 +7,11 @@ const routes = [
   { path: '/', component: Home, name: 'Home' },
   { path: '/login', component: LoginView },
   { path: '/settings', component: Settings },
+  {
+    path: '/device/:uuid/subdevices',
+    name: 'SubDevices',
+    component: () => import('@/views/SubDevices.vue') // Path to your SubDevices component
+  }
 ];
 
 const router = createRouter({

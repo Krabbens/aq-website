@@ -1,17 +1,9 @@
 <template>
-    <router-link :to="`/device/${device.uuid}`" class="device">
+    <router-link :to="`/device/${device.uuid}/subdevices`" class="device">
         <div class="device-name">{{ device.name }}</div>
         <div class="device-controls">
             <i class="icon-timer"></i>
             <i class="icon-manual"></i>
-        </div>
-        <div class="device-bottom">
-            <div class="device-status">{{ isOn ? 'On' : 'Off' }}</div>
-            <label class="switch" @click="handleSwitchClick">
-                <input type="checkbox" :checked="isOn" @change="toggleSwitch">
-                <span class="slider"></span>
-            </label>
-
         </div>
     </router-link>
 </template>

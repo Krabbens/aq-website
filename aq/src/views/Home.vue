@@ -1,69 +1,28 @@
 <template>
-  <div class="container">
-    <!-- Navbar -->
-    <div class="navbar">
-      <div class="logo">aq</div>
-      <div class="nav-icons">
-        <router-link to="/">
-          <FeatherIcon icon="home" />
-        </router-link>
-        <router-link to="/settings">
-          <FeatherIcon icon="settings" />
-        </router-link>
-        <!-- Your dark mode toggle remains the same -->
-        <div @click="toggleDarkMode">
-          <FeatherIcon :icon="darkMode ? 'sun' : 'moon'" />
+  <div class="bg-white pb-6 sm:pb-8 lg:pb-12">
+    <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
+      <header class="mb-8 flex items-center justify-between py-4 md:py-8">
+
+        <Logo />
+        <Navbar />
+
+      </header>
+
+        <div v-if="isLoading" class="loading-screen">
+          <div class="circle"></div>
         </div>
-      </div>
-    </div>
 
-
-
-
-    <div v-if="isLoading" class="loading-screen">
-      <div class="circle"></div>
-    </div>
-
-    <div v-if="isValidToken">
-      <div class="camera-box container">
-        <div></div> <!-- For the vertical notches of Top Left & Bottom Right -->
-        <span>
-          <div></div> <!-- For the vertical notches of Top Right & Bottom Left -->
-        </span>
-        <Device v-for="device in devices" :key="device.id" :device="device" @toggle-device="handleDeviceToggle" />
-        <button class="add-device">+</button>
-      </div>
-    </div>
-    <div v-else>
-      <!-- Hero Section -->
-      <div class="hero">
-        <div class="content-box">
-          <h1>AQ</h1>
-          <p>Kontrola urządzeń domowych</p>
-          <div class="spacer"></div> <!-- Spacer to push button down -->
-          <div class="spacer"></div>
-          <router-link to="/login" class="cta-button">Zaloguj się</router-link>
+        <div v-if="isValidToken">
+            <div></div> <!-- For the vertical notches of Top Left & Bottom Right -->
+            <span>
+              <div></div> <!-- For the vertical notches of Top Right & Bottom Left -->
+            </span>
+            <Device v-for="device in devices" :key="device.id" :device="device" @toggle-device="handleDeviceToggle" />
+            <button class="add-device">+</button>
         </div>
-      </div>
+        
+        <HomePageView v-else />
 
-      <!-- Features Section -->
-      <div class="features">
-        <div class="feature-item">
-          <i class="icon-feature1"></i>
-          <h2>Prostota</h2>
-          <p>Intuicyjne zarządzanie urządzeniami.</p>
-        </div>
-        <div class="feature-item">
-          <i class="icon-feature2"></i>
-          <h2>Wszechstronność</h2>
-          <p>Kontrola oświetlenia, ogrzewania i więcej.</p>
-        </div>
-        <div class="feature-item">
-          <i class="icon-feature3"></i>
-          <h2>Funkcjonalność</h2>
-          <p>Bogata paleta możliwości.</p>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -71,6 +30,9 @@
 <script>
 import FeatherIcon from '@/components/FeatherIcon.vue';
 import Device from '@/components/Device.vue';
+import Navbar from '@/components/Navbar.vue';
+import Logo from '@/components/Logo.vue';
+import HomePageView from '@/views/HomePageView.vue'
 import axios from 'axios';
 
 export default {
@@ -86,6 +48,9 @@ export default {
   components: {
     Device,
     FeatherIcon,
+    Navbar,
+    HomePageView,
+    Logo
   },
   created() {
     this.checkTokenValidity();
@@ -102,7 +67,7 @@ export default {
       try {
         //get token from cookie
         this.token = this.getCookie('token');
-        const response = await axios.get('https://f2iz1i1t1w1m.share.zrok.io/auth', {
+        const response = await axios.get('https://krabbens.jprq.live/auth', {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
@@ -121,7 +86,7 @@ export default {
       }
     },
     async getDevices() {
-      const response = await axios.post('https://f2iz1i1t1w1m.share.zrok.io/api/v1/list_devices', {
+      const response = await axios.post('https://krabbens.jprq.live/api/v1/list_devices', {
         auth: this.token
       });
 
@@ -148,18 +113,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.icon-div {
-  margin-right: 15px;
-  transition: color 0.3s ease-in-out;
-}
-
-.nav-icons>* {
-  margin-left: 30px;
-  /* Adjust the margin-left value as desired */
-}
-
-.icon-div:hover {
-  color: #00b4d8;
-}
-</style>
+<style scoped></style>
