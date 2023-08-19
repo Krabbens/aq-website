@@ -14,9 +14,9 @@
     data() {
       return {
         texts: [
-          'Welcome to AQ',
-          'Explore our features',
-          'Control your smart home'
+          'Witaj w AQ',
+          'Monitoruj swoje urządzenia',
+          'Zarządzaj swoim domem'
         ],
         activeIndex: 0,
         timer: null
