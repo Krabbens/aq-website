@@ -1,27 +1,29 @@
 <template>
   <div class="bg-white pb-6 sm:pb-8 lg:pb-12">
     <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
-      <header class="mb-8 flex items-center justify-between py-4 md:py-8">
+      <header class="mb-8 flex items-center justify-between md:pt-8">
 
         <Logo />
         <Navbar />
 
       </header>
 
-        <div v-if="isLoading" class="loading-screen">
-          <div class="circle"></div>
+      <div v-if="isLoading" class="loading-screen">
+        <div class="circle"></div>
+      </div>
+      <span v-if="isValidToken" class="text-2xl font-bold text-neutral-900 dark:text-neutral-50">Your Devices</span>
+      
+      <Spacer8 />
+      
+      <div v-if="isValidToken" class="bg-white py-6 sm:py-8 lg:py-12">
+        <div class="grid grid-cols-5 px-4 md:px-8 gap-4">
+          <Device v-for="device in devices" :key="device.id" :device="device" @toggle-device="handleDeviceToggle" />
         </div>
+      </div>
 
-        <div v-if="isValidToken">
-            <div></div> <!-- For the vertical notches of Top Left & Bottom Right -->
-            <span>
-              <div></div> <!-- For the vertical notches of Top Right & Bottom Left -->
-            </span>
-            <Device v-for="device in devices" :key="device.id" :device="device" @toggle-device="handleDeviceToggle" />
-            <button class="add-device">+</button>
-        </div>
-        
-        <HomePageView v-else />
+
+
+      <HomePageView v-else />
 
     </div>
   </div>
@@ -32,6 +34,7 @@ import FeatherIcon from '@/components/FeatherIcon.vue';
 import Device from '@/components/Device.vue';
 import Navbar from '@/components/Navbar.vue';
 import Logo from '@/components/Logo.vue';
+import Spacer8 from '@/components/spacers/Spacer8.vue';
 import HomePageView from '@/views/HomePageView.vue'
 import axios from 'axios';
 
@@ -50,7 +53,8 @@ export default {
     FeatherIcon,
     Navbar,
     HomePageView,
-    Logo
+    Logo,
+    Spacer8,
   },
   created() {
     this.checkTokenValidity();
