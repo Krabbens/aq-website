@@ -12,6 +12,7 @@ import router from './router'
 
 import './assets/style.css'
 import 'magic.css/dist/magic.min.css'
+import 'material-icons/iconfont/material-icons.css';
 
 const app = createApp(App)
 
