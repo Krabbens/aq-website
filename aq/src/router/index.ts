@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import LoginView from '../views/LoginView.vue';
 import Settings from '../views/Settings.vue';
+import SubDevices from '../views/SubDevices.vue';
 
 const routes = [
   { path: '/', component: Home, name: 'Home' },
@@ -10,7 +11,7 @@ const routes = [
   {
     path: '/device/:uuid/subdevices',
     name: 'SubDevices',
-    component: () => import('@/views/SubDevices.vue') // Path to your SubDevices component
+    component: SubDevices,
   }
 ];
 
