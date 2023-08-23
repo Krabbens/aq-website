@@ -2,3 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+.translate-x-45-5pc {
+  transform: translateX(45.5%);
+}
+
+.material-symbols-outlined-gray {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 200,
+  'opsz' 48
+}
+
+.filter-enabled {
+  filter: invert(77%) sepia(98%) saturate(354%) hue-rotate(70deg) brightness(92%) contrast(87%);
+}
+
+.filter-disabled {
+  filter: invert(58%) sepia(32%) saturate(5549%) hue-rotate(323deg) brightness(114%) contrast(95%);
+}
+
+.filter-auto {
+  filter: invert(89%) sepia(15%) saturate(4726%) hue-rotate(347deg) brightness(104%) contrast(96%);
+}
+
+.collapse {
+  display: flex;
+  flex-direction: column;
+}
+
+.collapse-title {
+  height: 40px; /* Adjust based on your design needs */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
