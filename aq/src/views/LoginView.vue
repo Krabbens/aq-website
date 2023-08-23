@@ -1,14 +1,14 @@
 <template>
   <div class="bg-white pb-6 sm:pb-8 lg:pb-12">
     <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
-      <header class="mb-8 flex items-center justify-between border-b py-4 md:mb-12 md:py-8 xl:mb-16">
+      <header class="mb-8 flex items-center justify-between md:pt-8">
 
         <Logo />
         <Navbar />
 
       </header>
 
-
+      <Spacer8 />
 
       <div class="bg-white pb-6 sm:pb-8 lg:pb-12 flex items-center">
         <div class="mx-auto max-w-screen-2xl px-4 md:px-8 flex items-center justify-between">
@@ -37,11 +37,15 @@
                   class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
               </div>
 
-              <button
+              <button data-test="swashOut" @click="swash()" v-if="!loading"
                 class="block rounded-lg bg-purple-800 mt-4 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-purple-300 transition duration-100 hover:bg-purple-700 focus-visible:ring active:bg-purple-600 md:text-base">Log
                 in</button>
-            </div>
+              <div class="translate-x-45-5pc" v-if="loading">
+                <div class="mt-4 w-12 h-12 rounded-full justify-center animate-spin
+                    border-2 border-solid border-blue-500 border-t-transparent"></div>
+              </div>
 
+            </div>
             <div class="flex items-center justify-center bg-gray-100 p-4">
               <p class="text-center text-sm text-gray-500">Don't have an account? <a href="#"
                   class="text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700">Register</a>
@@ -58,11 +62,13 @@
 import Navbar from '@/components/Navbar.vue';
 import Logo from '@/components/Logo.vue';
 import RotatingText from "@/components/RotatingText.vue";
+import Spacer8 from '@/components/spacers/Spacer8.vue';
 export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      loading: false
     };
   },
   methods: {
@@ -87,13 +93,24 @@ export default {
           this.$router.push({ name: 'Home' });
         }
         );
+    },
+    swash() {
+      const swash = document.querySelector('[data-test="swashOut"]');
+      console.log(swash);
+      swash.classList.add('magictime', 'swashOut')
+      setTimeout(() => {
+        this.loading = true;
+        swash.classList.add('invisible');
+      }, 1000);
     }
+
   },
   components: {
     RotatingText,
     Logo,
-    Navbar
-  }
+    Navbar,
+    Spacer8
+  },
 }
 </script>
   
