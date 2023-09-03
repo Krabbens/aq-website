@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-family: 'Noto Sans', sans-serif;
+}
+
 .translate-x-45-5pc {
   transform: translateX(45.5%);
 }
