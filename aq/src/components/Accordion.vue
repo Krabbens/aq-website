@@ -11,7 +11,7 @@
             </span>
         </summary>
         <div
-            class="bg-white text-black w-full flex flex-col rounded-xl shadow-lg p-4 my-2 text-neutral-600 mt-3 group-open:animate-fadeIn border">
+            class="bg-white text-black w-full flex flex-col rounded-xl gap-3 shadow-lg p-4 my-2 text-neutral-600 mt-3 group-open:animate-fadeIn transition-all border">
             <slot></slot>
         </div>
     </details>
