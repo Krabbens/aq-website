@@ -12,20 +12,26 @@
 import axios from 'axios';
 
 export default {
+    emits: ['update:modelValue'],
     name: 'ColorPicker',
     props: {
         label: {
             type: Object,
             required: true
+        },
+        modelValue: {
+            type: Array,
+            required: true
         }
     },
     data() {
         return {
-            hue: 0,
+            hue: this.rgbToHsv(this.modelValue)[0],
             colorInfo: {
                 name: 'Loading...',
-                hex: '#000000'
-            }
+                hex: this.rgbToHex(this.modelValue)
+            },
+            rgbArray: this.modelValue
         };
     },
     computed: {
@@ -34,7 +40,7 @@ export default {
         }
     },
     methods: {
-        hsvToHex(h, s, v) {
+        hsvToRgb(h, s, v) {
             // Ensure that h, s, and v are in the valid range
             h = Math.max(0, Math.min(360, h));
             s = Math.max(0, Math.min(100, s));
@@ -72,18 +78,59 @@ export default {
                 b = x;
             }
 
+            return [
+                Math.round(255 * (r + m)),
+                Math.round(255 * (g + m)),
+                Math.round(255 * (b + m))
+            ];
+        },
+        rgbToHex(rgb) {
+            let r = rgb[0];
+            let g = rgb[1];
+            let b = rgb[2];
             // Convert RGB to HEX
-            const rHex = Math.round((r + m) * 255).toString(16).padStart(2, '0');
-            const gHex = Math.round((g + m) * 255).toString(16).padStart(2, '0');
-            const bHex = Math.round((b + m) * 255).toString(16).padStart(2, '0');
+            const rHex = Math.round(r).toString(16).padStart(2, '0');
+            const gHex = Math.round(g).toString(16).padStart(2, '0');
+            const bHex = Math.round(b).toString(16).padStart(2, '0');
 
             return `#${rHex}${gHex}${bHex}`;
         },
-        async setColorInfo(newHue) {
-            let hexString = this.hsvToHex(newHue, 100, 100);
-            //convert to string
+        rgbToHsv(rgb) {
+            // Convert RGB to HSV
+            const r = rgb[0] / 255;
+            const g = rgb[1] / 255;
+            const b = rgb[2] / 255;
 
-            console.log(hexString);
+            const cMax = Math.max(r, g, b);
+            const cMin = Math.min(r, g, b);
+            const delta = cMax - cMin;
+
+            let h = 0;
+            if (delta === 0) {
+                h = 0;
+            } else if (cMax === r) {
+                h = 60 * (((g - b) / delta) % 6);
+            } else if (cMax === g) {
+                h = 60 * (((b - r) / delta) + 2);
+            } else {
+                h = 60 * (((r - g) / delta) + 4);
+            }
+
+            let s = 0;
+            if (cMax === 0) {
+                s = 0;
+            } else {
+                s = delta / cMax;
+            }
+
+            const v = cMax;
+
+            return [h, s * 100, v * 100];
+        },
+        async setColorInfo(newHue) {
+            let hexString = this.hsvToRgb(newHue, 100, 100);
+            //convert to string
+            hexString = this.rgbToHex(hexString);
 
             let hex = hexString.replace('#', '');
             let redHex = hex.substring(0, 2);
@@ -100,17 +147,32 @@ export default {
                 .catch((error) => {
                     console.error('Error fetching color data:', error);
                 });
+        },
+        hexToRgb(hex) {
+            // Convert a hex color string to an RGB array
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            return [r, g, b];
         }
     },
     watch: {
         hue(newHue) {
             // Make a GET request to the Color API when the slider value changes
             this.setColorInfo(newHue);
+
+            let rgb = this.hsvToRgb(newHue, 100, 100);
+            console.log(rgb)
+            console.log(newHue)
+            let greenredblue = [rgb[0], rgb[1], rgb[2]];
+
+            this.$emit('update:modelValue', greenredblue);
         }
     },
-    mounted() {
+    created() {
+        console.log(this.modelValue);
         // Make a GET request to the Color API when the component is mounted
-        this.setColorInfo(0);
+        this.setColorInfo(this.rgbToHsv(this.modelValue)[0])
     }
 };
 </script>
